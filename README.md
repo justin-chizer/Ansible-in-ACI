@@ -1,3 +1,4 @@
+![Terraform GitHub Actions](https://github.com/justin-chizer/ansible-in-aci/workflows/Terraform%20GitHub%20Actions/badge.svg?branch=master)
 # Goals
 Running in GitHub Actions:
 
