@@ -1,6 +1,6 @@
 resource_group     = "worker"
 region             = "westus2"
-worker-vnet        = "worker-vnet"
+worker_vnet_name   = "worker-vnet"
 worker_subnet_name = "worker-vm-subnet"
 hub_resource_group = "core"
 hub_vnet_name      = "core-vnet"

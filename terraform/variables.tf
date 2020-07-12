@@ -8,7 +8,7 @@ variable "region" {
   description = "Should be same as Hub"
 }
 
-variable "worker-vnet" {
+variable "worker_vnet_name" {
   type        = string
   description = "Name of new VNet"
 }
