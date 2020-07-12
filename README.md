@@ -1,4 +1,4 @@
-![Terraform GitHub Actions](https://github.com/justin-chizer/ansible-in-aci/workflows/Terraform%20GitHub%20Actions/badge.svg?branch=master)
+![Actions Pipeline](https://github.com/justin-chizer/ansible-in-aci/workflows/CI/badge.svg)
 # Goals
 Running in GitHub Actions:
 
@@ -21,6 +21,25 @@ We have the hub infrastructure already provisioned that contains:
 - ACI subnet
 - VM
 - Azure Container Registry
+- Azure Key Vault
 
 This can be done by running the ./initial-infrastructure.sh script.
+
+
+# Setup
+
+There are two Service Principals that need to be made. The first is scoped to the Azure Key Vault and will have a scope of Reader. For example:
+```
+az ad sp create-for-rbac --scope /subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/<NAME>/providers/Microsoft.KeyVault/vaults/<VaultName> --role Reader
+```
+This Service Principal is stored as a "secret" in GitHub.
+
+TIP: Don't forget to give the Service Principal GET access on the "secrets"
+
+The second Service Principal will be stored in Key Vault and will have a scope of Contributor. For example:
+```
+az ad sp create-for-rbac --scope /subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx --role Contributor
+```
+This Service Principal will be used to create our resources.
+
 

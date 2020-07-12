@@ -22,6 +22,7 @@ VM_NAME=core-vm
 # ACR_NAME must be globally unique
 ACR_NAME=coreacrchizer
 BASTION_NAME=core-bastion
+KV_NAME=core-kv-chizer
 
 # Create Resource Group
 az group create -g $RESOURCE_GROUP -l $REGION
@@ -47,5 +48,8 @@ az network bastion create -g $RESOURCE_GROUP -n $BASTION_NAME --vnet-name $VNET_
 # Now we have a VNet with 5 subnets and 1 private VM. 
 # Using the managed Azure Bastion service we are able to connect to the VM through the Azure portal.
 
-#Create Private ACR
+# Create ACR
 az acr create -g $RESOURCE_GROUP -n $ACR_NAME --sku Premium --default-action Deny --public-network-enabled true --admin-enabled false
+
+# Create Key Vault
+az keyvault create -g $RESOURCE_GROUP -n $KV_NAME --sku premium
