@@ -16,7 +16,7 @@ env:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  terraform:
     # The type of runner that the job will run on
     runs-on: ubuntu-18.04
 
@@ -80,3 +80,26 @@ jobs:
         args: -var-file="terraform.tfvars" -var=client_secret="${{ steps.myGetSecretAction.outputs.CLIENT-SECRET }}" -var=client_id="${{ steps.myGetSecretAction.outputs.CLIENT-ID }}" -var=subscription_id="${{ steps.myGetSecretAction.outputs.SUBSCRIPTION-ID }}" -var=tenant_id="${{ steps.myGetSecretAction.outputs.TENANT-ID }}"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  aci:
+    needs: terraform
+    name: 'AZ CLI'
+    runs-on: ubuntu-18.04
+    steps:
+    - name: Azure login  
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - uses: Azure/get-keyvault-secrets@v1.0
+      with:
+        keyvault: "core-kv-chizer"
+        secrets: 'CLIENT-ID, CLIENT-SECRET, SUBSCRIPTION-ID, TENANT-ID'
+      id: myGetSecretAction
+    - name: Azure CLI ACI
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.8.0
+        inlineScript: |
+          az login -u ${{ steps.myGetSecretAction.outputs.CLIENT-ID }} -p ${{ steps.myGetSecretAction.outputs.CLIENT-SECRET }}
+          az container create --resource-group core --name run-ansible --image coreacrchizer.azurecr.io/ansible:v1 --registry-login-server coreacrchizer.azurecr.io --registry-username ${{ steps.myGetSecretAction.outputs.CLIENT-ID }} --registry-password ${{ steps.myGetSecretAction.outputs.CLIENT-SECRET }} --ip-address private --vnet core-vnet --subnet aci-subnet
+      

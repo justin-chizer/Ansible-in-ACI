@@ -12,6 +12,9 @@ Running in GitHub Actions:
     - Run Ansible and connect to the VM using the IP, user name, and password.
     - Run the Ansible Playbook to configure the VM.
 
+# Why
+
+We want to be able to deploy and then configure a VM without exposing any public IPs. By running Azure Container Instances inside of the VNet we are able to accomplish this.
 # Assumptions
 
 We have the hub infrastructure already provisioned that contains:

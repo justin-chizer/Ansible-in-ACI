@@ -1,0 +1,14 @@
+---
+- hosts: workers
+  become: true
+  tasks:
+    - name: Update apt-cache 
+      apt: update_cache=yes
+
+    - name: Install Packages
+      apt: name={{ item }} state=latest
+      with_items:
+        - vim
+        - git
+        - curl
+        - unzip

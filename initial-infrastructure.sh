@@ -49,7 +49,7 @@ az network bastion create -g $RESOURCE_GROUP -n $BASTION_NAME --vnet-name $VNET_
 # Using the managed Azure Bastion service we are able to connect to the VM through the Azure portal.
 
 # Create ACR
-az acr create -g $RESOURCE_GROUP -n $ACR_NAME --sku Premium --default-action Deny --public-network-enabled true --admin-enabled false
+az acr create -g $RESOURCE_GROUP -n $ACR_NAME --sku Premium --default-action Allow --public-network-enabled true --admin-enabled false
 
 # Create Key Vault
 az keyvault create -g $RESOURCE_GROUP -n $KV_NAME --sku premium
